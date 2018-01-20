@@ -2,6 +2,7 @@ package com.minhtam.mvpsample.DataManager;
 
 import com.minhtam.mvpsample.DataManager.Cloud.API;
 import com.minhtam.mvpsample.DataManager.Cloud.Client;
+import com.minhtam.mvpsample.Model.MenuItem;
 import com.minhtam.mvpsample.Model.Movie;
 
 import java.util.List;
@@ -16,11 +17,8 @@ import retrofit2.Response;
 
 public class DataManagerment {
 
-    private GetDataListener callBack;
-
-    public void setCallBack(GetDataListener callBack) {
-        this.callBack = callBack;
-    }
+    private getMovieListener movieListener;
+    private getMenuItemListener menuItemListener;
 
     public void getMovie(){
         API api = Client.getAPI();
@@ -29,22 +27,57 @@ public class DataManagerment {
             @Override
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.isSuccessful()) {
-                    callBack.onResponse(response.body());
+                    movieListener.onResponse(response.body());
                 } else {
-                    callBack.onFailure(response.message());
+                    movieListener.onFailure(response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Movie>> call, Throwable t) {
-                callBack.onFailure(t.getMessage());
+                movieListener.onFailure(t.getMessage());
                 t.printStackTrace();
             }
         });
     }
 
-    public interface GetDataListener{
+    public void getMenuItem() {
+        API api = Client.getAPI();
+        Call<List<MenuItem>> call = api.listMenu("something");
+        call.enqueue(new Callback<List<MenuItem>>() {
+            @Override
+            public void onResponse(Call<List<MenuItem>> call, Response<List<MenuItem>> response) {
+                if (response.isSuccessful()) {
+                    menuItemListener.onResponse(response.body());
+                } else {
+                    menuItemListener.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MenuItem>> call, Throwable t) {
+                menuItemListener.onFailure(t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    public void setMenuItemListener(getMenuItemListener menuItemListener) {
+        this.menuItemListener = menuItemListener;
+    }
+
+    public void setMovieListener(getMovieListener movieListener) {
+        this.movieListener = movieListener;
+    }
+
+    public interface getMovieListener {
         void onResponse(List<Movie> listMovie);
+        void onFailure(String message);
+    }
+
+    public interface getMenuItemListener{
+        void onResponse(List<MenuItem> menuItemList);
         void onFailure(String message);
     }
 }

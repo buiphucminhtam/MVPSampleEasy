@@ -1,5 +1,6 @@
 package com.minhtam.mvpsample.DataManager.Cloud;
 
+import com.minhtam.mvpsample.Model.MenuItem;
 import com.minhtam.mvpsample.Model.Movie;
 
 import java.util.List;
@@ -15,4 +16,7 @@ import retrofit2.http.Path;
 public interface API {
     @GET("getmovie/{abcd}")
     Call<List<Movie>> listMovie(@Path("abcd") String abcd);
+
+    @GET("getclient/{blabla}")
+    Call<List<MenuItem>> listMenu(@Path("blabla") String blabla);
 }
