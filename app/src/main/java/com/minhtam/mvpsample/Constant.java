@@ -5,5 +5,5 @@ package com.minhtam.mvpsample;
  */
 
 public class Constant {
-    public static final String MAIN_API = "abcd";
+    public static final String MAIN_API = "http://abcd/";
 }
